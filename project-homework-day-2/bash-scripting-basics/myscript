@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "Hello there"
+mkdir my-project
+echo "Making new folder my-project"
+cd my-project
+mkdir assets css js
+touch styles.css index.html scripts.js
+mv styles.css css
+mv scripts.js js
+
