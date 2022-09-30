@@ -1,5 +1,6 @@
 var infoStrings = ["Joshua", "Zuluaga", "Javascript"];
 var infoNums = [9, 29, 2022];
+var programmingLanguages =["HTML", "CSS", "JavaScript", "React", "Bananas"]
 
 function introduction(strArray, numArray){
     console.log(`Hello my name is ${strArray[0]} ${strArray[1]}!`);
@@ -10,7 +11,17 @@ function introduction(strArray, numArray){
     console.log(`I now know how to make a variables and functions`);
 }
 
+function reintroduction(){
+    console.log(`I want everyone to know that I am learning ${programmingLanguages}`);
+    console.log(`Wait! I'm not learning ${programmingLanguages.pop()}!`)
+    programmingLanguages.push("Node")
+    console.log(`I am leaning this ${programmingLanguages.join(", ")}`)
+}
+
 introduction(infoStrings, infoNums);
+reintroduction();
 
 // What would be the length of the string array?
-console.log(infoStrings.length);
+    // console.log(infoStrings.length);
+// In the reintroduceMyself function what would happen if we called the stringArray variable that we defined in the function block?
+    // if we called it before we called the function it would not exist
