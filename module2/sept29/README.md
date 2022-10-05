@@ -1,0 +1,1 @@
+So far the hardest thing for me has been for loops. For whatever reason my  brain has a hard time wrapping around the them. I can understand them  if I see an example of them, but I have to look at an example. I am hoping that with time it will become easier.
