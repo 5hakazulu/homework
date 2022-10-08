@@ -1,0 +1,36 @@
+body{
+    background-image: url("/images/WildernessBG.webp");
+}
+#myName{
+    color: #C9C9C9;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#pixelJosh{
+   max-width: 10%;
+   max-height: auto;
+}
+h1{
+    color: #C9C9C9;
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#jobtitle{
+    display: inline-block;
+    color: #C9C9C9;
+}
+h3{
+    color: #C9C9C9;
+    font-family: Arial, Helvetica, sans-serif;
+}
+p{
+    font-family: Arial, Helvetica, sans-serif;
+    color: #C9C9C9;
+}
+li{
+    font-family: Arial, Helvetica, sans-serif;
+    color: #C9C9C9;
+}
+#kaiju, #Best{
+    max-width: 30%;
+    max-height: auto;
+}
