@@ -1,0 +1,8 @@
+.item{
+    position: static;
+}
+.deal{
+     position: relative; 
+    left: 0px;
+    top: 650px;
+}
