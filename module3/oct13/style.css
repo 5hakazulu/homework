@@ -18,12 +18,14 @@ body{
     align-items: stretch;
 }
 .header{
-    background-color: #256D85;
+    background-color: #06283D;
     width: 100%;
     height: 100px;
     color: #DFF6FF;
     display: flex;
     justify-content: center;
+    border-bottom: #256D85;
+    border-width: 3px;
     
     
 }
@@ -61,6 +63,7 @@ body{
 .mainContent{
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     
     background-color: #256D85;
     flex-grow: 2;
@@ -82,7 +85,7 @@ body{
     align-self: flex-end;
     height: 30px;
     width: 100%;
-    background-color: #256D85;
+    /* background-color: #256D85; */
     align-items: center;
     justify-content: center;
 }
