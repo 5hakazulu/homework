@@ -11,7 +11,7 @@ body{
 }
 .content{
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     flex-direction: column;
     width: 100vw;
     height: 100vh;
@@ -24,8 +24,7 @@ body{
     color: #DFF6FF;
     display: flex;
     justify-content: center;
-    border-bottom: #256D85;
-    border-width: 3px;
+    
     
     
 }
@@ -41,7 +40,7 @@ body{
     flex-direction: row;
     justify-content: space-between;
     align-items: stretch;
-    flex-grow: 4;
+    /* flex-grow: 4; */
    
 }
 .sidebar{
