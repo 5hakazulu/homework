@@ -6,6 +6,12 @@ body {
 body * {
   box-sizing: inherit;
 }
+h1{
+  text-align: center;
+}
+h3{
+  text-align: center;
+}
 
 .message-box {
   width: 900px;
