@@ -6,23 +6,34 @@ const standButton = document.getElementById("stand-button")
 const playerCurrentScore = document.getElementById("playerscore");
 const dealerCurrentScore = document.getElementById("dealerscore");
 const gameTitle = document.getElementById("Title");
+// bet buttons
+const bet1 = document.getElementById("1-button");
+const bet5 = document.getElementById("5-button");
+const bet10 = document.getElementById("10-button");
+const bet20 = document.getElementById("20-button");
+const bet50 = document.getElementById("50-button");
+const bet100 = document.getElementById("100-button");
+
 
 let _canDeal = true;
+let _canBet = true;
 let _gameOver = false;
 let _canHit = false;
 let _playerBusted = false;
 let _dealerBusted = false;
 
 let playerScore = 0;
+let playerBet = 0;
+let playerPool =500;
 let dealerScore = 0;
 
-const deck = [];
+let deck = [];
 const suits = ["hearts", "spades", "clubs", "diamonds"];
 const ranks = ["ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "jack", "queen", "king"];
-const playerCards = [];
-const dealerCards = [];
+let playerCards = [];
+let dealerCards = [];
 
-const makeDeck = (rank, suit) => {
+function makeDeck(rank, suit) {
   const card = {
     rank: rank,
     suit: suit,
@@ -30,6 +41,8 @@ const makeDeck = (rank, suit) => {
   };
   deck.push(card);
 };
+
+
 
 for (let suit of suits) {
   for (const rank of ranks) {
@@ -46,7 +59,17 @@ hitButton.addEventListener("click", event => hitMe());
 standButton.addEventListener("click", event => stand());
 
 
-
+function makeBet(){
+  if (_canDeal === true){
+    if (_canBet === true && playerPool > 0){
+      bet1.addEventListener("click", playerBet +=1);
+      playerPool-=1;
+      console.log(playerBet);
+      console.log(playerPool)
+    }
+  }
+ 
+}
 function shuffleDeck(array) {
   var m = array.length, t, i
   while (m) {
@@ -61,23 +84,32 @@ function shuffleDeck(array) {
   return array;
 }
 
-function cleanBeforeRound(){
+function cleanBeforeRound() {
   dealerHand.innerHTML = "";
   playerHand.innerHTML = "";
   gameTitle.innerHTML = "";
   playerCurrentScore.innerHTML = 0;
   dealerCurrentScore.innerHTML = 0;
-  playerScore =0;
+  playerScore = 0;
   dealerScore = 0;
-  // playerCards = [];
-  // dealerCards = [];
+  playerCards = [];
+  dealerCards = [];
+  // deck =[];
+  // for (let suit of suits) {
+  //   for (const rank of ranks) {
+  //     makeDeck(rank, suit);
+  //   }
+  //   return deck;
 
+  // }
+  console.log(deck);
 }
 
 function dealCards(event) {
 
   if (_canDeal === true) {
-    // cleanBeforeRound();
+    cleanBeforeRound();
+    console.log(deck);
     newDeck = shuffleDeck(deck);
     for (let i = 0; i < 4; i++) {
       if (i % 2 === 0) {
@@ -96,6 +128,15 @@ function dealCards(event) {
         dealerCards.push(newCard)
       }
     }
+    dealerScore = calculateScore(dealerCards, dealerScore);
+    dealerCurrentScore.innerText = dealerScore;
+    if (dealerScore > 21) {
+      dealerCurrentScore.innerText = "BUST " + dealerScore;
+      _dealerBusted = true;
+      _gameOver = true;
+      endgame();
+    }
+
     playerScore = calculateScore(playerCards, playerScore);
     playerCurrentScore.innerText = playerScore;
     if (playerScore > 21) {
@@ -105,17 +146,10 @@ function dealCards(event) {
       _gameOver = true;
       endgame();
     }
-    dealerScore = calculateScore(dealerCards, dealerScore);
-    console.log(dealerScore);
-    dealerCurrentScore.innerText = dealerScore;
-    if (dealerScore > 21) {
-      dealerCurrentScore.innerText = "BUST " + dealerScore;
-      _dealerBusted = true;
-      _gameOver = true;
-      endgame();
-    }
+    _canHit = true;
+    _canDeal = false;
   }
-  _canHit = true;
+
 
 
 }
@@ -147,36 +181,35 @@ function hitMe(event) {
         }
       }
     }
-  }
+    dealerScore = calculateScore(dealerCards, dealerScore);
+    console.log(dealerScore);
+    dealerCurrentScore.innerText = dealerScore;
+    if (dealerScore > 21) {
+      dealerCurrentScore.innerText = "BUST " + dealerScore;
+      _dealerBusted = true;
+      _canHit = false;
+      _gameOver = true;
+      endgame();
+    }
+    playerScore = calculateScore(playerCards, playerScore);
+    console.log(playerScore);
+    playerCurrentScore.innerText = playerScore;
+    if (playerScore > 21) {
+      playerCurrentScore.innerText = "BUST " + playerScore;
+      _canHit = false;
+      _playerBusted = true;
+      _gameOver = true;
+      endgame();
+    }
 
-  playerScore = calculateScore(playerCards, playerScore);
-  console.log(playerScore);
-  playerCurrentScore.innerText = playerScore;
-  if (playerScore > 21) {
-    playerCurrentScore.innerText = "BUST " + playerScore;
-    _canHit = false;
-    _playerBusted = true;
-    _gameOver = true;
-    endgame();
+
   }
-  dealerScore = calculateScore(dealerCards, dealerScore);
-  console.log(dealerScore);
-  dealerCurrentScore.innerText = dealerScore;
-  if (dealerScore > 21) {
-    dealerCurrentScore.innerText = "BUST " + dealerScore;
-    _dealerBusted = true;
-    _canHit = false;
-    _gameOver = true;
-    endgame();
-  }
- 
- 
 }
 
-function checkForAces(handOfCards, score){
-  let numOfAces =0
-  for(let i =0; i<handOfCards.length; i++){
-    if(numOfAces === 1){
+function checkForAces(handOfCards, score) {
+  let numOfAces = 0
+  for (let i = 0; i < handOfCards.length; i++) {
+    if (numOfAces === 1) {
       score -= 11
 
     }
@@ -184,22 +217,18 @@ function checkForAces(handOfCards, score){
 }
 
 function calculateScore(array, score) {
-  
+
   score = 0;
   for (let i = 0; i < array.length; i++) {
 
 
-    if (array[i].rank === "ace" ) {
-      // if(oldScore < 21){
-        score += 11;
-      // }
-      // else if (score > 21) {
-      //   oldScore -= 11;
-      //   score += oldScore;
-      // }
-      
+    if (array[i].rank === "ace") {
+
+      score += 11;
+
+
     }
-    
+
     else if (array[i].rank === "jack") {
       score += 10;
     }
@@ -232,20 +261,22 @@ function stand(event) {
     console.log(dealerScore);
     dealerCurrentScore.innerText = dealerScore;
     if (dealerScore > 21) {
-      dealerCurrentScore.innerText = "BUST " + dealerScore;
+      dealerCurrentScore.innerText = "BUST"
       _dealerBusted = true;
 
     }
 
   }
-  _gameOver = true;
+  //_gameOver = true;
   endgame();
 
 }
 
 function finalscoring() {
-  console.log(playerScore);
+  
   console.log(dealerScore);
+  console.log(playerScore);
+  
   if (_dealerBusted === true) {
     // setTimeout(alert("Player Wins!!"), 1);
     gameTitle.innerText = "Player Wins!!"
@@ -259,11 +290,11 @@ function finalscoring() {
     // setTimeout(alert("House Wins!!"), 1);
     gameTitle.innerText = "House Wins!!"
   }
-  else if (dealerScore > playerScore) {
+  else if (dealerScore > playerScore ) {
     // setTimeout(alert("House Wins!!"), 1);
     gameTitle.innerText = "House Wins!!"
   }
-  else if (dealerScore < playerScore) {
+  else if (dealerScore < playerScore ) {
     // setTimeout(alert("Player Wins!!"), 1);
     gameTitle.innerText = "Player Wins!!"
   }
@@ -274,12 +305,18 @@ function finalscoring() {
 }
 
 
-function endgame(){
+function endgame() {
 
-  
+
   finalscoring();
-  _canDeal =true;
+  _canDeal = true;
 
-
+  // makeDeck(rank, suit)
+  deck = [];
+  for (let suit of suits) {
+    for (const rank of ranks) {
+      makeDeck(rank, suit);
+    }
+  }
 }
 
