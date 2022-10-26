@@ -7,12 +7,22 @@ const playerCurrentScore = document.getElementById("playerscore");
 const dealerCurrentScore = document.getElementById("dealerscore");
 const gameTitle = document.getElementById("Title");
 // bet buttons
-const bet1 = document.getElementById("1-button");
-const bet5 = document.getElementById("5-button");
-const bet10 = document.getElementById("10-button");
-const bet20 = document.getElementById("20-button");
-const bet50 = document.getElementById("50-button");
-const bet100 = document.getElementById("100-button");
+const bet1 = document.getElementById("1");
+const bet5 = document.getElementById("5");
+const bet10 = document.getElementById("10");
+const bet20 = document.getElementById("20");
+const bet50 = document.getElementById("50");
+const bet100 = document.getElementById("100");
+
+dealButton.addEventListener("click", event => dealCards())
+hitButton.addEventListener("click", event => hitMe());
+standButton.addEventListener("click", event => stand());
+bet1.addEventListener("click", event => makeBet(bet1.id));
+bet5.addEventListener("click", event => makeBet(bet5.id));
+bet10.addEventListener("click", event => makeBet(bet10.id));
+bet20.addEventListener("click", event => makeBet(bet20.id));
+bet50.addEventListener("click", event => makeBet(bet50.id));
+bet100.addEventListener("click", event => makeBet(bet100.id));
 
 
 let _canDeal = true;
@@ -24,8 +34,10 @@ let _dealerBusted = false;
 
 let playerScore = 0;
 let playerBet = 0;
-let playerPool =500;
+let playerPool = 500;
 let dealerScore = 0;
+let dealerAceCount = 0;
+let playerAceCount = 0;
 
 let deck = [];
 const suits = ["hearts", "spades", "clubs", "diamonds"];
@@ -42,8 +54,6 @@ function makeDeck(rank, suit) {
   deck.push(card);
 };
 
-
-
 for (let suit of suits) {
   for (const rank of ranks) {
     makeDeck(rank, suit);
@@ -54,21 +64,22 @@ window.addEventListener("DOMContentLoaded", () => {
   // Execute after page load
 });
 
-dealButton.addEventListener("click", event => dealCards())
-hitButton.addEventListener("click", event => hitMe());
-standButton.addEventListener("click", event => stand());
 
 
-function makeBet(){
-  if (_canDeal === true){
-    if (_canBet === true && playerPool > 0){
-      bet1.addEventListener("click", playerBet +=1);
-      playerPool-=1;
-      console.log(playerBet);
-      console.log(playerPool)
-    }
+
+function makeBet(elem) {
+  if (_canDeal === true) {
+    console.log(typeof elem);
+    let betAmount = Number(elem);
+    console.log(typeof betAmount);
+    console.log(betAmount);
+    playerPool -= betAmount;
+    playerBet += betAmount;
+    console.log(playerPool);
+    console.log(playerBet);
   }
- 
+
+
 }
 function shuffleDeck(array) {
   var m = array.length, t, i
@@ -94,26 +105,23 @@ function cleanBeforeRound() {
   dealerScore = 0;
   playerCards = [];
   dealerCards = [];
-  // deck =[];
-  // for (let suit of suits) {
-  //   for (const rank of ranks) {
-  //     makeDeck(rank, suit);
-  //   }
-  //   return deck;
+  dealerAceCount = 0;
+  playerAceCount = 0;
+  playerBet = 0;
 
-  // }
-  console.log(deck);
 }
 
 function dealCards(event) {
 
   if (_canDeal === true) {
     cleanBeforeRound();
-    console.log(deck);
     newDeck = shuffleDeck(deck);
     for (let i = 0; i < 4; i++) {
       if (i % 2 === 0) {
         let newCard = newDeck.pop();
+        if (newCard.rank === "ace") {
+          playerAceCount += 1;
+        }
         let cardImage = document.createElement("img")
         cardImage.setAttribute("src", "/images/" + newCard.rank + "_of_" + newCard.suit + ".png");
         playerHand.appendChild(cardImage);
@@ -122,6 +130,9 @@ function dealCards(event) {
       }
       else {
         let newCard = newDeck.pop();
+        if (newCard.rank === "ace") {
+          dealerAceCount += 1;
+        }
         let cardImage = document.createElement("img")
         cardImage.setAttribute("src", "/images/" + newCard.rank + "_of_" + newCard.suit + ".png");
         dealerHand.appendChild(cardImage);
@@ -129,7 +140,9 @@ function dealCards(event) {
       }
     }
     dealerScore = calculateScore(dealerCards, dealerScore);
+    dealerScore = reduceAces(dealerScore, dealerAceCount);
     dealerCurrentScore.innerText = dealerScore;
+
     if (dealerScore > 21) {
       dealerCurrentScore.innerText = "BUST " + dealerScore;
       _dealerBusted = true;
@@ -138,7 +151,9 @@ function dealCards(event) {
     }
 
     playerScore = calculateScore(playerCards, playerScore);
+    playerScore = reduceAces(playerScore, playerAceCount);
     playerCurrentScore.innerText = playerScore;
+
     if (playerScore > 21) {
       playerCurrentScore.innerText = "BUST " + playerScore;
       _canHit = false;
@@ -160,17 +175,22 @@ function hitMe(event) {
       if (i % 2 === 0) {
         if (_canHit === true) {
           let newCard = newDeck.pop();
+          if (newCard.rank === "ace") {
+            playerAceCount += 1;
+          }
           let cardImage = document.createElement("img")
           cardImage.setAttribute("src", "/images/" + newCard.rank + "_of_" + newCard.suit + ".png");
           playerHand.appendChild(cardImage);
           playerCards.push(newCard);
         }
-
-
       }
       else {
         if (dealerScore < 17) {
           let newCard = newDeck.pop();
+          if (newCard.rank === "ace") {
+            playerAceCount += 1;
+            console.log(playerAceCount);
+          }
           console.log(newCard);
           console.log(newDeck);
           let cardImage = document.createElement("img")
@@ -182,8 +202,9 @@ function hitMe(event) {
       }
     }
     dealerScore = calculateScore(dealerCards, dealerScore);
-    console.log(dealerScore);
+    dealerScore = reduceAces(dealerScore, dealerAceCount);
     dealerCurrentScore.innerText = dealerScore;
+
     if (dealerScore > 21) {
       dealerCurrentScore.innerText = "BUST " + dealerScore;
       _dealerBusted = true;
@@ -192,8 +213,9 @@ function hitMe(event) {
       endgame();
     }
     playerScore = calculateScore(playerCards, playerScore);
-    console.log(playerScore);
+    playerScore = reduceAces(playerScore, playerAceCount);
     playerCurrentScore.innerText = playerScore;
+
     if (playerScore > 21) {
       playerCurrentScore.innerText = "BUST " + playerScore;
       _canHit = false;
@@ -206,27 +228,26 @@ function hitMe(event) {
   }
 }
 
-function checkForAces(handOfCards, score) {
-  let numOfAces = 0
-  for (let i = 0; i < handOfCards.length; i++) {
-    if (numOfAces === 1) {
-      score -= 11
-
+function reduceAces(sum, aces) {
+ 
+  if (sum > 21) {
+    if (aces > 0) {
+      sum -= 10;
+      aces -= 1;
     }
   }
+ 
+
+  return sum;
 }
+
 
 function calculateScore(array, score) {
 
   score = 0;
   for (let i = 0; i < array.length; i++) {
-
-
     if (array[i].rank === "ace") {
-
       score += 11;
-
-
     }
 
     else if (array[i].rank === "jack") {
@@ -250,16 +271,16 @@ function stand(event) {
   _canHit = false;
   while (dealerScore < 17) {
     let newCard = newDeck.pop();
-    console.log(newCard);
-    console.log(newDeck);
+   
     let cardImage = document.createElement("img")
     cardImage.setAttribute("src", "/images/" + newCard.rank + "_of_" + newCard.suit + ".png");
     dealerHand.appendChild(cardImage);
     dealerCards.push(newCard)
 
     dealerScore = calculateScore(dealerCards, dealerScore);
-    console.log(dealerScore);
+    
     dealerCurrentScore.innerText = dealerScore;
+    dealerScore = reduceAces(dealerScore, dealerAceCount);
     if (dealerScore > 21) {
       dealerCurrentScore.innerText = "BUST"
       _dealerBusted = true;
@@ -273,13 +294,15 @@ function stand(event) {
 }
 
 function finalscoring() {
-  
-  console.log(dealerScore);
-  console.log(playerScore);
-  
+
   if (_dealerBusted === true) {
     // setTimeout(alert("Player Wins!!"), 1);
+    let winnings = playerBet* 2
+    playerPool += winnings;
+    console.log(playerPool);
     gameTitle.innerText = "Player Wins!!"
+    
+    
 
   }
   else if (_playerBusted === true) {
@@ -287,20 +310,29 @@ function finalscoring() {
     gameTitle.innerText = "House Wins!!"
   }
   else if (_dealerBusted === true && _playerBusted === true) {
+    let winnings = playerBet* 2
+    playerPool += winnings;
+    console.log(playerPool);
+    gameTitle.innerText = "Tie!"
+
+  }
+  else if (dealerScore > playerScore) {
     // setTimeout(alert("House Wins!!"), 1);
     gameTitle.innerText = "House Wins!!"
   }
-  else if (dealerScore > playerScore ) {
-    // setTimeout(alert("House Wins!!"), 1);
-    gameTitle.innerText = "House Wins!!"
-  }
-  else if (dealerScore < playerScore ) {
-    // setTimeout(alert("Player Wins!!"), 1);
+  else if (dealerScore < playerScore) {
+    let winnings = playerBet* 2
+    playerPool += winnings;
+    console.log(playerPool);
     gameTitle.innerText = "Player Wins!!"
+  
   }
   else if (dealerScore == playerScore) {
-    // setTimeout(alert("House Wins!!"), 1);
-    gameTitle.innerText = "House Wins!!"
+    let winnings = playerBet* 2
+    playerPool += winnings;
+    console.log(playerPool);
+    gameTitle.innerText = "Tie!"
+
   }
 }
 

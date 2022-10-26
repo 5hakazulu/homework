@@ -8,17 +8,40 @@ body * {
 }
 h1{
   text-align: center;
+  padding: 0;
+  margin: 0;
+}
+label{
+  display: ;
 }
 h3{
   text-align: center;
+  padding: 0;
+  margin: 0;
+}
+p{
+  display: inline;
+  padding: 0;
+  margin: 0;
+  
+}
+button{
+  padding-top: 0;
+  margin-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
-
+.info{
+  display: flex;
+  justify-content: space-around;
+}
 .message-box {
   width: 900px;
   max-width: calc(100% - 20px);
   margin: 0 auto 10px;
-  height: 1em;
+  /* height: 1em; */
+  max-height:calc(100% - 20px); ;
   font-size: 18px;
   color: rgb(22, 77, 8);
 }
@@ -43,7 +66,7 @@ h3{
 }
 
 .player-name {
-  display: block;
+  display: inline-block;
   font-size: 16px;
   margin-bottom: 8px;
 }
