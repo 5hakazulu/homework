@@ -1,0 +1,6 @@
+input:invalid{
+    background-color: ivory;
+    outline: 2px solid red;
+    border-radius: 5px;
+
+}

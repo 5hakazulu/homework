@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <form>
+            <fieldset>
+                <legend>User Information</legend>
+                <p>
+                    <label for="name">Name: </label>
+                    <br>
+                    <input type="text" name="name" id="name"  min="5" required />
+                </p>
+                <p>
+                    <label for="pass">Password:</label>
+                    <br>
+                    <input type="password" id="pass" min="6" max="15" required>
+                </p>
+                <p>
+                    <label for="email">Email:</label>
+                    <br>
+                    <input type="email" id="email" required>
+                </p>
+                <p>
+                    <label for="about">About me:</label>
+                    <br>
+                    <textarea name="aboutMe" id="about" cols="30" rows="5" maxlength="250"></textarea>
+                </p>
+                <fieldset>
+                    <legend>Robot Check</legend>
+                    <p>
+                        <label for="robotCheck">Please Type: <strong>I am a human</strong></label>
+                        <br>
+                        <input type="text" name="" id="robotCheck" pattern="I am a human" required>
+                    </p>
+                </fieldset>
+                <br>
+                <button id="submit-button" type="submit">Submit</button>
+            </fieldset>
+        </form>
+        <script src="script2.js"></script>
+    </body>
+</html>

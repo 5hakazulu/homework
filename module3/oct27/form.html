@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Form with Required Field Solution</title>
+        <style>
+          body {
+            margin: 0 auto;
+            max-width: 500px;
+          }
+        </style>
+      </head>
+    <body>
+         <form>
+            <fieldset>
+                <legend>User Information</legend>
+                <p>
+                    <label for="name">Name: </label>
+                    <input type="text" name="name" id="name" required />
+                </p>
+                <p>
+                    <label for="name">Age: </label>
+                    <input type="number" label ="Age" min = "0" max ="100" required>
+
+                </p>    
+                <p>
+                    <label for="Username">Username: </label>
+                    <input type="text" name="Username" id="name" >
+                </p>
+            </fieldset>
+            
+          
+            <button id="submit-button" type="submit">Submit</button>
+        </form>
+   <script src="script.js"></script>   
+    </body>
+</html>
