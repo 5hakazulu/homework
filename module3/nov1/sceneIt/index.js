@@ -5,7 +5,7 @@ myForm.addEventListener('submit', function(e){
     e.preventDefault();
     const searchString = document.getElementById('searchBar').value
     const urlEncodedSearchString =encodeURIComponent(searchString);
-    fetch("http://www.omdbapi.com/?apikey=59354c85&s=" + urlEncodedSearchString)
+    fetch("https://www.omdbapi.com/?apikey=59354c85&s=" + urlEncodedSearchString)
         .then(function(response) {
             return response.json();
         })
