@@ -1,13 +1,33 @@
 // https://swapi.dev/api/
 
 let arrayOfPeople= [];
+const subjectDropDownMenu = document.getElementById('subjectSelector');
 
-// async function fetchPeople(){
+subjectDropDownMenu.addEventListener('change', (event)=>{
+    websiteName =`https://swapi.dev/api/${getOption()}/`;
+    console.log(websiteName);
     
-//     const result = await fetch("https://swapi.dev/api/people");
-//     const resultJson = await result.json();
-//     console.log(resultJson);
-// }
+    fetch(websiteName)
+        .then(res=> res.json())
+       
+        .then(data=> {
+          
+            console.log(data);
+            data.results.forEach(element => {
+                const card = subjectCardTemplate.content.cloneNode(true).children[0]
+                if(getOption() === "films"){
+                    console.log(element.title)
+                }
+                else{
+                    console.log(element.name);
+                }
+                
+            
+            });
+            
+        })
+    // return websiteName;
+})
 
 async function fetchPeople(){
     let next = true;
@@ -47,7 +67,7 @@ fetchPeople();
 
 
 // const myForm = document.getElementById("searchForm");
-// const subjectDropDownMenu = document.getElementById('subjectSelector');
+
 // let websiteName = '';
 // const subjectCardTemplate = document.querySelector("[data-subject-template]")
 
@@ -79,29 +99,5 @@ fetchPeople();
 //     return selectElement.value;
 // }
 
-// subjectDropDownMenu.addEventListener('change', (event)=>{
-//     websiteName =`https://swapi.dev/api/${getOption()}/`;
-//     console.log(websiteName);
-    
-//     fetch(websiteName)
-//         .then(res=> res.json())
-       
-//         .then(data=> {
-          
-//             console.log(data);
-//             data.results.forEach(element => {
-//                 const card = subjectCardTemplate.content.cloneNode(true).children[0]
-//                 if(getOption() === "films"){
-//                     console.log(element.title)
-//                 }
-//                 else{
-//                     console.log(element.name);
-//                 }
-                
-            
-//             });
-            
-//         })
-//     // return websiteName;
-// })
+
 
